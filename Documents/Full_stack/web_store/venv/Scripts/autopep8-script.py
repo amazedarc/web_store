@@ -1,4 +1,4 @@
-#!c:\Users\HP\Documents\Flask_training\venv\Scripts\python.exe
+#!c:\Users\HP\Documents\Full_stack\web_store\venv\Scripts\python.exe
 # EASY-INSTALL-ENTRY-SCRIPT: 'autopep8==1.5.4','console_scripts','autopep8'
 __requires__ = 'autopep8==1.5.4'
 import re
