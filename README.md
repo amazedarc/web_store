@@ -1,2 +1,2 @@
 # web_store
-web_store  Restfull Api using Python
+web_store  Restful-Api using Python
