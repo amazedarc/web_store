@@ -9,11 +9,11 @@ userid_mapping = {u.id: u for u in users}
 
 
 def authenticate(username, password):
-    user = userid_mapping.get(username, None)
+    user = username_mapping.get(username, None)
     if user and user.password == password:
         return user
 
 
 def identity(payload):
     userid = payload['identity']
-    return userid.userid_mapping.get(userid, None)
+    return userid_mapping.get(userid, None)
