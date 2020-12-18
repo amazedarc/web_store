@@ -52,11 +52,25 @@ class User:
 
 
 class UserRegister(Resource):
+
     parser = reqparse.RequestParser()
+    parser.add_argument('username', type=str, required=True,
+                        help='This field can not be empty')
+    parser.add_argument('password', type=str, required=True,
+                        help='This field can not be empty')
 
     def post(self):
+        data = UserRegister.parser.parse_args()
+
+        if User.find_by_username(data['username']):
+            return {'message': 'User with name {} already exist'.format(data['username'])}, 400
+
         connection = sqlite3.connect('data.db')
         cursor = connection.cursor()
-
         query = 'INSERT INTO users VALUES (NULL,?,?)'
         cursor.execute(query, (data['username'], data['password']))
+
+        connection.commit()
+        connection.close()
+
+        return {'message': 'User has been created'}, 201
