@@ -4,7 +4,7 @@ from flask_restful import reqparse, Resource
 from models.store import StoreModel
 
 
-class Store (Resource):
+class Store(Resource):
 
     parser = reqparse.RequestParser()
     parser.add_argument('name', type=float, required=True,
@@ -17,19 +17,17 @@ class Store (Resource):
         store = StoreModel.find_by_name(name)
         if store:
             return store.json(), 201
-        return {'message': 'Item not found'}, 400
+        return {'message': 'store not found'}, 400
 
     @jwt_required()
     def post(self, name):
         if StoreModel.find_by_name(name):
-            return {'item': 'An item with name {} was found'.format(name)}, 400
-        data = Store.parser.parse_args()
-        store = StoreModel(name, **data)
-
+            return {'store': 'An Store with name {} was found'.format(name)}, 400
+        store = StoreModel(name)
         try:
             store.save_to_db()
         except:
-            return{'message': 'An error occured while inserting item'}, 500
+            return{'message': 'An error occured while inserting store'}, 500
         return store.json(), 201
 
     @jwt_required()
@@ -37,7 +35,7 @@ class Store (Resource):
         store = StoreModel.find_by_name(name)
         if store:
             store.delete_to_db()
-        return {'message': 'item has been deleted'}
+        return {'message': 'store has been deleted'}
 
     @jwt_required()
     def put(self, name):
@@ -45,15 +43,15 @@ class Store (Resource):
         store = StoreModel.find_by_name(name)
 
         if store is None:
-            store = StoreModel(name, **data)
+            store = StoreModel(name)
         else:
-            store.price = data['price']
+            store.name = data['name']
         store.save_to_db()
         return store.json(), 200
 
 
-class StoreList (Resource):
+class StoreList(Resource):
     @jwt_required()
     def get(self):
         # return {'items': list(map(lambda item: item.json(), ItemModel.query.all()))}
-        return {'items': [store.json() for store in StoreModel.query.all()]}
+        return {'Stores': [store.json() for store in StoreModel.query.all()]}
